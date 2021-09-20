@@ -4,12 +4,12 @@ load_dotenv()
 
 from os import getenv
 
-IS_DEV = getenv("IS_DEV") is not None and getenv("IS_DEV").upper() == "TRUE"
+IS_PRODUCTION = getenv("IS_PRODUCTION") is not None and getenv("IS_PRODUCTION").upper() == "TRUE"
 
-if IS_DEV:
-    from .dev import *
-else:
+if IS_PRODUCTION:
     print("The production server is running 🎉")
     from .production import *
+else:
+    from .dev import *
 
 from .base import *
