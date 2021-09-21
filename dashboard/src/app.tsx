@@ -7,10 +7,11 @@ const engine = new Styletron();
 
 const Centered = styled("div", {
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-    marginLeft: "2rem",
+    marginLeft: "1rem",
 });
 
 export default function App() {

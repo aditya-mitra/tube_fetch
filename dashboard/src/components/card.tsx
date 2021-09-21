@@ -17,7 +17,6 @@ export default function YoutubeCard({
 }: IYoutubeCard) {
     return (
         <Card
-            overrides={{ Root: { style: { width: "328px" } } }}
             headerImage={thumbnailUrl}
             title={title}
         >
