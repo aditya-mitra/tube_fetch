@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from results.models import YTResult
+from results.models import YTResult, YoutubeAPIKey
 
 
 class YTResultsSerializer(ModelSerializer):
@@ -14,3 +14,9 @@ class YTResultsSerializer(ModelSerializer):
             "description",
             "published_date",
         )
+
+
+class YoutubeAPIKeySerializer(ModelSerializer):
+    class Meta:
+        model = YoutubeAPIKey
+        fields = ("id", "name", "api_key")
