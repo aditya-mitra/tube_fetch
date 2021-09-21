@@ -19,4 +19,5 @@ class YTResultsSerializer(ModelSerializer):
 class YoutubeAPIKeySerializer(ModelSerializer):
     class Meta:
         model = YoutubeAPIKey
-        fields = ("id", "name", "api_key")
+        fields = ("id", "name", "api_key", "available")
+        read_only_fields = ("available",)

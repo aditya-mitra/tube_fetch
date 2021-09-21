@@ -12,3 +12,4 @@ class YTResult(models.Model):
 class YoutubeAPIKey(models.Model):
     api_key = models.CharField(max_length=200, unique=True)
     name = models.CharField(max_length=100, blank=True)
+    available = models.DateField(auto_now_add=True)
