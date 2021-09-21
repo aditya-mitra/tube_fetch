@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView
 
-# Create your views here.
+from results.models import YTResult
+from results.serializers import YTResultsSerializer
+
+
+class YTResultsListView(ListAPIView):
+    serializer_class = YTResultsSerializer
+    queryset = YTResult.objects.all()
