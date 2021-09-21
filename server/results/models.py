@@ -7,3 +7,8 @@ class YTResult(models.Model):
     thumbnail_url = models.URLField()
     description = models.TextField()
     published_date = models.DateTimeField(db_index=True)
+
+
+class YoutubeAPIKeys(models.Model):
+    api_key = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=100, blank=True)
