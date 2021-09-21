@@ -5,15 +5,15 @@ from json import loads as json_loads
 from django.db.models import QuerySet
 
 from results.models import YTResult
+from .get_api_key import store_default_api_key, get_working_api_key
 
 http = PoolManager()
 
-API_KEY = "AIzaSyApDC4cW478g8MDsSLizst-6Vh_OlV3-DQ"
 
 BASE_URL = "https://www.googleapis.com/youtube/v3/search"
 
 DEFAULT_QUERY = {
-    "key": API_KEY,
+    "key": "",
     "q": "football",
     "safeSearch": "moderate",
     "publishedAfter": datetime(2021, 1, 1).isoformat() + "Z",
@@ -24,6 +24,12 @@ DEFAULT_QUERY = {
     "pageToken": "",
 }
 
+logger = logging.getLogger("GET_AND_STORE_YT_RESULTS")
+handler = logging.StreamHandler()
+formatter = logging.Formatter("[GET_AND_STORE_YT_RESULTS] %(levelname)s: %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
 
 def store_results(items: list) -> int:
     fault_limit = 0
@@ -49,20 +55,26 @@ def store_results(items: list) -> int:
 
         items_inserted = items_inserted + 1
 
-    logging.info("The number of items inserted were {}".format(items_inserted))
+    logger.info("The number of items inserted were {}".format(items_inserted))
 
     return fault_limit
 
 
-def start_scheduler():
+def get_results():
     query = DEFAULT_QUERY.copy()
-    logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
+    working_key = get_working_api_key()
+    if working_key is None:
+        logger.critical("No Working API Keys found. (Please add a new one)")
 
-    logging.info("Fetching and Storing Results")
+    logger.info('Using API Key - {}'.format(working_key))
+
+    query["key"] = working_key
+
+    logger.info("Fetching and Storing Results")
     fault_limit = 0
 
     for i in range(1, 10):
-        logging.info(
+        logger.info(
             "Getting results for page {} with page token {}".format(
                 i, query["pageToken"]
             )
@@ -75,7 +87,12 @@ def start_scheduler():
 
         if fault_limit > 5:
 
-            logging.warning(
+            logger.warning(
                 "The fault was {} (Stopping getting more results)".format(fault_limit)
             )
             break
+
+
+def start_scheduler():
+    store_default_api_key()
+    get_results()
