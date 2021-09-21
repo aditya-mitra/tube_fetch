@@ -3,6 +3,7 @@ from urllib3 import PoolManager
 from datetime import datetime
 from json import loads as json_loads
 from django.db.models import QuerySet
+from apscheduler.schedulers.background import BackgroundScheduler
 
 from results.models import YTResult
 from .get_api_key import store_default_api_key, get_working_api_key
@@ -65,6 +66,7 @@ def get_results():
     working_key = get_working_api_key()
     if working_key is None:
         logger.critical("No Working API Keys found. (Please add a new one)")
+        return
 
     logger.info('Using API Key - {}'.format(working_key))
 
@@ -95,4 +97,6 @@ def get_results():
 
 def start_scheduler():
     store_default_api_key()
-    get_results()
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(get_results,'interval',minutes=1)
+    scheduler.start()
