@@ -11,6 +11,7 @@ python-dotenv = "~=0.19"
 django-cors-headers = "~=3.8"
 apscheduler = "~=3.7"
 psycopg2 = {version = "~=2.9", extras = ["binary"]}
+gunicorn = "~=20.1"
 
 [dev-packages]
 black = "*"
