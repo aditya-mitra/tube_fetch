@@ -7,10 +7,16 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.5.13"
+    "baseui": "^10.2.1",
+    "preact": "^10.5.13",
+    "styletron-engine-atomic": "^1.4.8",
+    "styletron-react": "^6.0.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.0.0",
+    "@types/styletron-engine-atomic": "^1.1.1",
+    "@types/styletron-react": "^5.0.3",
+    "@types/styletron-standard": "^2.0.2",
     "typescript": "^4.3.2",
     "vite": "^2.5.4"
   }
