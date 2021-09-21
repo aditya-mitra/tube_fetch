@@ -1,3 +1,4 @@
+import sys
 import logging
 from urllib3 import PoolManager
 from datetime import datetime
@@ -31,6 +32,7 @@ formatter = logging.Formatter("[GET_AND_STORE_YT_RESULTS] %(levelname)s: %(messa
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
+
 
 def store_results(items: list) -> int:
     fault_limit = 0
@@ -68,7 +70,7 @@ def get_results():
         logger.critical("No Working API Keys found. (Please add a new one)")
         return
 
-    logger.info('Using API Key - {}'.format(working_key))
+    logger.info("Using API Key - {}".format(working_key))
 
     query["key"] = working_key
 
@@ -96,7 +98,11 @@ def get_results():
 
 
 def start_scheduler():
+
+    if "migrate" in sys.argv or "makemigrations" in sys.argv:
+        return
+
     store_default_api_key()
     scheduler = BackgroundScheduler()
-    scheduler.add_job(get_results,'interval',minutes=1)
+    scheduler.add_job(get_results, "interval", minutes=1)
     scheduler.start()
