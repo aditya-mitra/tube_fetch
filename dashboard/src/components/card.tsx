@@ -16,16 +16,18 @@ export default function YoutubeCard({
     videoId,
 }: IYoutubeCard) {
     return (
-        <Card
-            headerImage={thumbnailUrl}
-            title={title}
-        >
+        <Card headerImage={thumbnailUrl} title={title}>
             <StyledBody>{description}</StyledBody>
             <StyledAction>
                 <Button
+                    onClick={() =>
+                        window
+                            .open(`https://youtu.be/${videoId}`, "_blank")
+                            ?.focus()
+                    }
                     overrides={{ BaseButton: { style: { width: "100%" } } }}
                 >
-                    {videoId}
+                    Open In New Tab
                 </Button>
             </StyledAction>
         </Card>

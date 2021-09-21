@@ -6,22 +6,27 @@ import fetchResults from "../lib/fetch-results";
 import { YoutubeResultType } from "../types";
 import PaginationBar from "../components/pagination";
 import { Block } from "baseui/block";
+import SearchBar from "../components/search-bar";
 
 export default function Results() {
     const [ytResults, setYtResults] = useState<YoutubeResultType[]>([]);
     const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchInput, setSearchInput] = useState("");
 
     useEffect(() => {
         const offset = (currentPage - 1) * 10;
-        fetchResults(offset).then((res) => {
+        fetchResults(offset, searchInput).then((res) => {
             setYtResults(res.results);
             setTotalCount(res.count);
         });
-    }, [currentPage]);
+    }, [currentPage, searchInput]);
 
     return (
         <>
+            <Block>
+                <SearchBar value={searchInput} setValue={setSearchInput} />
+            </Block>
             <Block margin="2rem 0">
                 <PaginationBar
                     totalCount={totalCount}
