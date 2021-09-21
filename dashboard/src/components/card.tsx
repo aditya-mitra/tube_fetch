@@ -1,5 +1,6 @@
 import { Card, StyledBody, StyledAction } from "baseui/card";
 import { Button } from "baseui/button";
+import { Label2, Paragraph2 } from "baseui/typography";
 
 interface IYoutubeCard {
     thumbnailUrl: string;
@@ -14,10 +15,16 @@ export default function YoutubeCard({
     thumbnailUrl,
     description,
     videoId,
+    publishedDate,
 }: IYoutubeCard) {
     return (
         <Card headerImage={thumbnailUrl} title={title}>
-            <StyledBody>{description}</StyledBody>
+            <StyledBody>
+                <Paragraph2>{description}</Paragraph2>
+                <Label2 marginLeft="5rem">
+                    <strong>{new Date(publishedDate).toLocaleString()} </strong>
+                </Label2>
+            </StyledBody>
             <StyledAction>
                 <Button
                     onClick={() =>
