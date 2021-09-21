@@ -1,3 +1,4 @@
+import logging
 from urllib3 import PoolManager
 from datetime import datetime
 from json import loads as json_loads
@@ -48,19 +49,24 @@ def store_results(items: list) -> int:
 
         items_inserted = items_inserted + 1
 
-    print("The number of items inserted were", items_inserted)
+    logging.info("The number of items inserted were {}".format(items_inserted))
 
     return fault_limit
 
 
 def start_scheduler():
     query = DEFAULT_QUERY.copy()
+    logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
-    print("Fetching and Storing Results")
+    logging.info("Fetching and Storing Results")
     fault_limit = 0
 
     for i in range(1, 10):
-        print("Getting results for page", i, "with page token", query["pageToken"])
+        logging.info(
+            "Getting results for page {} with page token {}".format(
+                i, query["pageToken"]
+            )
+        )
 
         r = http.request("GET", BASE_URL, fields=query)
         yt_results = json_loads(r.data.decode("utf-8"))
@@ -68,4 +74,8 @@ def start_scheduler():
         query["pageToken"] = yt_results["nextPageToken"]
 
         if fault_limit > 5:
+
+            logging.warning(
+                "The fault was {} (Stopping getting more results)".format(fault_limit)
+            )
             break
