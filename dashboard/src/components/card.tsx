@@ -2,7 +2,6 @@ import { Card, StyledBody, StyledAction } from "baseui/card";
 import { Button } from "baseui/button";
 
 interface IYoutubeCard {
-    id: number;
     thumbnailUrl: string;
     title: string;
     description: string;
@@ -10,22 +9,24 @@ interface IYoutubeCard {
     publishedDate: string;
 }
 
-export default function YoutubeCard() {
+export default function YoutubeCard({
+    title,
+    thumbnailUrl,
+    description,
+    videoId,
+}: IYoutubeCard) {
     return (
         <Card
             overrides={{ Root: { style: { width: "328px" } } }}
-            headerImage={"https://source.unsplash.com/user/erondu/700x400"}
-            title="Example card"
+            headerImage={thumbnailUrl}
+            title={title}
         >
-            <StyledBody>
-                Proin ut dui sed metus pharetra hend rerit vel non mi. Nulla
-                ornare faucibus ex, non facilisis nisl.
-            </StyledBody>
+            <StyledBody>{description}</StyledBody>
             <StyledAction>
                 <Button
                     overrides={{ BaseButton: { style: { width: "100%" } } }}
                 >
-                    Open In New Tab
+                    {videoId}
                 </Button>
             </StyledAction>
         </Card>
