@@ -8,6 +8,7 @@ django = "~=3.2"
 djangorestframework = "~=3.12"
 urllib3 = "~=1.26"
 python-dotenv = "~=0.19"
+django-cors-headers = "~=3.8"
 
 [dev-packages]
 black = "*"
