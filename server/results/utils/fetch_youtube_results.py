@@ -15,10 +15,11 @@ DEFAULT_QUERY = {
     "key": API_KEY,
     "q": "football",
     "safeSearch": "moderate",
-    "publishedAfter": datetime(2010, 1, 1).isoformat() + "Z",
+    "publishedAfter": datetime(2021, 1, 1).isoformat() + "Z",
     "order": "date",
     "maxResults": "50",
     "part": "snippet",
+    "type": "video",
     "pageToken": "",
 }
 
@@ -28,9 +29,6 @@ def store_results(items: list) -> int:
     items_inserted = 0
 
     for yt_result in items:
-
-        if yt_result["id"]["kind"] != "youtube#video":
-            continue
 
         if (
             QuerySet(model=YTResult)
@@ -50,7 +48,7 @@ def store_results(items: list) -> int:
 
         items_inserted = items_inserted + 1
 
-    print("The number of items inserted were ", items_inserted)
+    print("The number of items inserted were", items_inserted)
 
     return fault_limit
 
