@@ -12,7 +12,7 @@ def store_default_api_key():
     """
     store a default api key for fetching
     """
-    API_KEY = "AIzaSyApDC4cW478g8MDsSLizst-6Vh_OlV3-DQ"
+    API_KEY = "AIzaSyBgyvoscfG9yyj9nG6LZOt99sQs7osvvEM"
 
     if QuerySet(YoutubeAPIKey).filter(api_key=API_KEY).exists():
         return
