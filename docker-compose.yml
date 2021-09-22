@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+    web:
+        build: ./server
+        ports:
+            - 9000:9000
+
+        depends_on:
+            - postgres_db
+
+        command: >
+            sh -c "
+            pipenv run python manage.py migrate &&
+            pipenv run python manage.py runserver 0.0.0.0:9000
+            "
+
+        restart: always
+
+    postgres_db:
+        image: postgres:13.0-alpine
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=fetch_admin
+            - POSTGRES_PASSWORD=good-password-postgres
+            - POSTGRES_DB=tube_fetch_db
+        restart: always
+
+    dashboard:
+        build: ./dashboard
+        ports:
+            - 5000:5000
+
+        depends_on:
+            - web
+
+        healthcheck:
+            test: curl --fail http://localhost:9000/api/v1 || exit 1
+            interval: 10s
+            timeout: 10s
+            start_period: 10s
+            retries: 5
+
+        command: yarn serve --host
+
+        restart: always
+
+volumes:
+    postgres_data:

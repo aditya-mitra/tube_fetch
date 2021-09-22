@@ -86,6 +86,8 @@ def get_results():
 
         r = http.request("GET", BASE_URL, fields=query)
         yt_results = json_loads(r.data.decode("utf-8"))
+        if "items" not in yt_results:
+            break
         fault_limit += store_results(yt_results["items"])
         query["pageToken"] = yt_results["nextPageToken"]
 
@@ -104,5 +106,6 @@ def start_scheduler():
 
     store_default_api_key()
     scheduler = BackgroundScheduler()
-    scheduler.add_job(get_results, "interval", minutes=1)
+    get_results() # intial populate
+    scheduler.add_job(get_results, "interval", minutes=2)
     scheduler.start()
