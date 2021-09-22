@@ -1,6 +1,8 @@
 {
   "name": "dashboard",
   "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "dev": "vite --port=4000",
     "build": "vite build",
