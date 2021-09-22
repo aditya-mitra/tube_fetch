@@ -13,11 +13,16 @@ def store_default_api_key():
     store a default api key for fetching
     """
 
-    API_KEY = "AIzaSyCJYk3M5a_1dWpznea7ogcfiKt3fdhFyPo"
+    API_KEY_1 = "AIzaSyCJYk3M5a_1dWpznea7ogcfiKt3fdhFyPo"
+    API_KEY_2 = "AIzaSyBgyvoscfG9yyj9nG6LZOt99sQs7osvvEM"
+    API_KEY_3 = "AIzaSyApDC4cW478g8MDsSLizst-6Vh_OlV3-DQ"
 
     QuerySet(YoutubeAPIKey).all().delete()
 
-    QuerySet(YoutubeAPIKey).create(name="default api key", api_key=API_KEY)
+    QuerySet(YoutubeAPIKey).create(name="default api key 1", api_key=API_KEY_1)
+    QuerySet(YoutubeAPIKey).create(name="default api key 2", api_key=API_KEY_2)
+    QuerySet(YoutubeAPIKey).create(name="default api key 3", api_key=API_KEY_3)
+
 
 
 def check_key_if_valid(key: str) -> bool:

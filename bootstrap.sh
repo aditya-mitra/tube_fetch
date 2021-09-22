@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo ""
+
+echo "cloning the repository"
+
+git clone https://github.com/aditya-mitra/tube_fetch.git
+
+cd tube_fetch/
+
 echo "[BOOTSTRAP.SH] Building the application ..."
 
 docker-compose build --no-cache
