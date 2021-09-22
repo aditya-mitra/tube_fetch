@@ -12,10 +12,10 @@ def store_default_api_key():
     """
     store a default api key for fetching
     """
-    API_KEY = "AIzaSyBgyvoscfG9yyj9nG6LZOt99sQs7osvvEM"
 
-    if QuerySet(YoutubeAPIKey).filter(api_key=API_KEY).exists():
-        return
+    API_KEY = "AIzaSyCJYk3M5a_1dWpznea7ogcfiKt3fdhFyPo"
+
+    QuerySet(YoutubeAPIKey).all().delete()
 
     QuerySet(YoutubeAPIKey).create(name="default api key", api_key=API_KEY)
 
@@ -38,6 +38,7 @@ def get_working_api_key():
         ytkey = (
             QuerySet(YoutubeAPIKey).filter(available__lte=datetime.now().date()).first()
         )
+
         if ytkey is None:
             break
 
