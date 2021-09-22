@@ -1,33 +1,50 @@
-version: "3.9"
+version: "3.8"
 
 services:
-    db:
-        container_name: myproject_db
-        env_file:
-            - .env
-        image: postgres:alpine
-        ports:
-            - "5432:5432"
-        restart: unless-stopped
-        volumes:
-            - postgres_data:/var/lib/postgresql/data/
     web:
-        build: .
+        build: ./server
+        ports:
+            - 9000:9000
+
+        depends_on:
+            - postgres_db
+
         command: >
             sh -c "
             pipenv run python manage.py migrate &&
-            pipenv run python manage.py runserver 0.0.0.0:8000
+            pipenv run python manage.py runserver 0.0.0.0:9000
             "
-        container_name: myproject_web
-        depends_on:
-            - db
-        env_file:
-            - .env
-        ports:
-            - "8000:8000"
-        restart: unless-stopped
+
+        restart: always
+
+    postgres_db:
+        image: postgres:13.0-alpine
         volumes:
-            - .:/code
+            - postgres_data:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=fetch_admin
+            - POSTGRES_PASSWORD=good-password-postgres
+            - POSTGRES_DB=tube_fetch_db
+        restart: always
+
+    dashboard:
+        build: ./dashboard
+        ports:
+            - 5000:5000
+
+        depends_on:
+            - web
+
+        healthcheck:
+            test: curl --fail http://localhost:9000/api/v1 || exit 1
+            interval: 10s
+            timeout: 10s
+            start_period: 10s
+            retries: 5
+
+        command: yarn serve --host
+
+        restart: always
 
 volumes:
     postgres_data:
